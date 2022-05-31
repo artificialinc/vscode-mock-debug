@@ -1,7 +1,7 @@
 {
   "name": "artificial-debug-extension",
   "displayName": "Artificial Workflow Debugging",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "artificial",
   "description": "Extension enabling VSCode debugging of Artificial Workflows",
   "author": {
@@ -86,8 +86,13 @@
             "properties": {
               "program": {
                 "type": "string",
-                "description": "Absolute path to a text file.",
+                "description": "Absolute path to a workflow file.",
                 "default": "${file}"
+              },
+              "jobArgs": {
+                "type": "object",
+                "description": "Values for workflow request module parameters.",
+                "default": {}
               }
             }
           },
@@ -98,7 +103,7 @@
             "properties": {
               "program": {
                 "type": "string",
-                "description": "Absolute path to a text file.",
+                "description": "Absolute path to a workflow file.",
                 "default": "${file}"
               }
             }
