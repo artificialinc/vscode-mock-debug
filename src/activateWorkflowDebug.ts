@@ -1,5 +1,5 @@
 /*
- * activateMockDebug.ts containes the shared extension code that can be executed both in node.js and the browser.
+ * activateWorkflowDebug.ts containes the shared extension code that can be executed both in node.js and the browser.
  */
 
 'use strict';
@@ -7,13 +7,13 @@
 import * as vscode from 'vscode';
 import { WorkspaceFolder, DebugConfiguration, ProviderResult, CancellationToken } from 'vscode';
 
-export function activateMockDebug(context: vscode.ExtensionContext, factory: vscode.DebugAdapterDescriptorFactory) {
+export function activateWorkflowDebug(context: vscode.ExtensionContext, factory: vscode.DebugAdapterDescriptorFactory) {
 
-	// register a configuration provider for 'mock' debug type
+	// register a configuration provider for 'artificial-workflow' debug type
 	const provider = new ArtificialWorkflowDebugConfigurationProvider();
 	context.subscriptions.push(vscode.debug.registerDebugConfigurationProvider('artificial-workflow', provider));
 
-	// register a dynamic configuration provider for 'mock' debug type
+	// register a dynamic configuration provider for 'artificial-workflow' debug type
 	context.subscriptions.push(vscode.debug.registerDebugConfigurationProvider('artificial-workflow', {
 		provideDebugConfigurations(folder: WorkspaceFolder | undefined): ProviderResult<DebugConfiguration[]> {
 			return [

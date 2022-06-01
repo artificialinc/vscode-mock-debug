@@ -9,7 +9,7 @@
 
 import * as vscode from 'vscode';
 import { ProviderResult } from 'vscode';
-import { activateMockDebug } from './activateWorkflowDebug';
+import { activateWorkflowDebug } from './activateWorkflowDebug';
 
 /*
  * The compile time flag 'runMode' controls how the debug adapter is run.
@@ -23,12 +23,12 @@ export function activate(context: vscode.ExtensionContext) {
 	switch (runMode) {
 		case 'server':
 			// communicate with a running debug adapter process via a socket
-			activateMockDebug(context, new WorkflowDebugAdapterServerDescriptorFactory());
+			activateWorkflowDebug(context, new WorkflowDebugAdapterServerDescriptorFactory());
 			break;
 
 		case 'external': default:
 			// run the debug adapter as a separate process
-			activateMockDebug(context, new WorkflowDebugAdapterExecutableFactory());
+			activateWorkflowDebug(context, new WorkflowDebugAdapterExecutableFactory());
 			break;
 	}
 }
