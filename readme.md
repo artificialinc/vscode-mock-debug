@@ -1,34 +1,48 @@
-# VS Code Mock Debug
+# Artificial Workflow Debug Extension
 
-This is a starter sample for developing VS Code debug adapters.
+This extension enables the 'artificial-workflow' debug type for debugging the execution of Artificial, inc. Workflows defined with Orchestration Python. It supports launching workflows for debugging, *step*, *continue*, *breakpoints*, *runtime errors*, and *local variable inspection*. Attaching to running workflows is not yet supported.
 
-**Mock Debug** simulates a debug adapter for Visual Studio Code.
-It supports *step*, *continue*, *breakpoints*, *exceptions*, and
-*variable access* but it is not connected to any real debugger.
+This extension is intended to be used with the VSCode devcontainer released as part of the Artificial SDK; in particular, it depends on the external CLI `wfdebug` tool, published in a separate Python package included in that devcontainer.
 
-The sample is meant as an educational piece showing how to implement a debug
-adapter for VS Code. It can be used as a starting point for developing a real adapter.
+Note: this project was forked from [microsoft/vscode-mock-debug](https://github.com/microsoft/vscode-mock-debug); the original README can be found [here](https://github.com/microsoft/vscode-mock-debug/blob/main/readme.md).
 
-More information about how to develop a new debug adapter can be found
-[here](https://code.visualstudio.com/docs/extensions/example-debuggers).
+# Using Workflow Debugging
 
-## Using Mock Debug
+Ensure that your devcontainer has the following environment variables globally exported, and that they point to the Artificial lab environment where you want to run workflows:
 
-* Install the **Mock Debug** extension in VS Code.
-* Create a new 'program' file `readme.md` and enter several lines of arbitrary text.
-* Switch to the debug viewlet and press the gear dropdown.
-* Select the debug environment "Mock Debug".
-* Press the green 'play' button to start debugging.
+* ARTIFICIAL_HOST
+* ARTIFICIAL_ORGID
+* ARTIFICIAL_LABID
+* ARTIFICIAL_TOKEN
+* ARTIFICIAL_CERT
+* ARTIFICIAL_KEY
 
-You can now 'step through' the `readme.md` file, set and hit breakpoints, and run into exceptions (if the word exception appears in a line).
+You should be able to open a terminal in your devcontainer and use e.g. `echo $ARTIFICIAL_TOKEN` to ensure that the above are visible to `wfdebug`.
 
-![Mock Debug](images/mock-debug.gif)
+To launch a workflow for debugging, create a launch.json configuration that looks similar to:
 
-## Build and Run
+```
+		{
+			"type": "artificial-workflow",
+			"request": "launch",
+			"name": "Debug Current File",
+			"program": "${file}"
+		}
+```
 
-* Clone the project [https://github.com/Microsoft/vscode-mock-debug.git](https://github.com/Microsoft/vscode-mock-debug.git)
-* Open the project folder in VS Code.
-* Press `F5` to build and launch Mock Debug in another VS Code window.
-* In the explorer view of the new window open the 'program' file `readme.md`
-* Set some breakpoints
-* From the editor's "Run and Debug" toolbar dropdown menu select "Debug File"
+When you launch, ensure that `"program"` contains the path to your workflow Python file.
+
+Currently, only Python files containing a single `@workflow` function are supported.
+
+To break on workflow runtime errors, check the "Runtime Errors" box that appears under Breakpoints after the first time you launch.
+
+To include workflow parameter values when launching, add the `"jobArgs"` parameter to your launch configuration:
+
+```
+        {
+            // ...
+            "jobArgs": {
+                "parameter name": /* JSON parameter value */
+            }
+        }
+```
