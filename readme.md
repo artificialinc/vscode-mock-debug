@@ -26,7 +26,8 @@ To launch a workflow for debugging, create a launch.json configuration that look
 			"type": "artificial-workflow",
 			"request": "launch",
 			"name": "Debug Current File",
-			"program": "${file}"
+			"program": "${file}",
+            "envFile": "${workspaceFolder}/artificial.env"
 		}
 ```
 
