@@ -1,4 +1,8 @@
-/*
+/*---------------------------------------------------------
+ * Copyright (C) Microsoft Corporation. All rights reserved.
+ *---------------------------------------------------------
+ * Copyright (C) Artificial, Inc. All rights reserved.
+ *---------------------------------------------------------
  * activateWorkflowDebug.ts containes the shared extension code that can be executed both in node.js and the browser.
  */
 

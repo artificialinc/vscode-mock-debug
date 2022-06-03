@@ -1,4 +1,8 @@
-/*
+/*---------------------------------------------------------
+ * Copyright (C) Microsoft Corporation. All rights reserved.
+ *---------------------------------------------------------
+ * Copyright (C) Artificial, Inc. All rights reserved.
+ *---------------------------------------------------------
  * extension.ts (and activateWorkflowDebug.ts) forms the "plugin" that plugs into VS Code and contains the code that
  * connects VS Code with the debug adapter.
  * 
