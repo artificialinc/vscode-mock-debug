@@ -97,7 +97,7 @@
               },
               "jobName": {
                 "type": "string",
-                "description": "Unique name of an existing request to launch.",
+                "description": "Unique name of an existing request to launch; ignored if jobId is set.",
                 "default": ""
               },
               "envFile": {
@@ -107,7 +107,7 @@
               },
               "jobArgs": {
                 "type": "object",
-                "description": "Values for workflow request module parameters; ignored if jobId is set.",
+                "description": "Values for workflow request module parameters; ignored if jobId or jobName is set.",
                 "default": {}
               }
             }
@@ -129,7 +129,7 @@
               },
               "jobName": {
                 "type": "string",
-                "description": "Unique name of the running job to attach to.",
+                "description": "Unique name of the running job to attach to; should be set if jobId is not set.",
                 "default": ""
               },
               "envFile": {
