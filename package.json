@@ -90,6 +90,11 @@
                 "description": "Absolute path to a workflow file.",
                 "default": "${file}"
               },
+              "jobId": {
+                "type": "string",
+                "description": "Unique id of an existing request to launch.",
+                "default": ""
+              },
               "envFile": {
                 "type": "string",
                 "description": "Absolute path to a .env file for the debug adapter.",
@@ -97,20 +102,26 @@
               },
               "jobArgs": {
                 "type": "object",
-                "description": "Values for workflow request module parameters.",
+                "description": "Values for workflow request module parameters; ignored if jobId is set.",
                 "default": {}
               }
             }
           },
           "attach": {
             "required": [
-              "program"
+              "program",
+              "jobId"
             ],
             "properties": {
               "program": {
                 "type": "string",
                 "description": "Absolute path to a workflow file.",
                 "default": "${file}"
+              },
+              "jobId": {
+                "type": "string",
+                "description": "Unique id of the running job to attach to.",
+                "default": ""
               },
               "envFile": {
                 "type": "string",
