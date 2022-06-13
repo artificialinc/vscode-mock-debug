@@ -95,6 +95,11 @@
                 "description": "Unique id of an existing request to launch.",
                 "default": ""
               },
+              "jobName": {
+                "type": "string",
+                "description": "Unique name of an existing request to launch.",
+                "default": ""
+              },
               "envFile": {
                 "type": "string",
                 "description": "Absolute path to a .env file for the debug adapter.",
@@ -109,8 +114,7 @@
           },
           "attach": {
             "required": [
-              "program",
-              "jobId"
+              "program"
             ],
             "properties": {
               "program": {
@@ -121,6 +125,11 @@
               "jobId": {
                 "type": "string",
                 "description": "Unique id of the running job to attach to.",
+                "default": ""
+              },
+              "jobName": {
+                "type": "string",
+                "description": "Unique name of the running job to attach to.",
                 "default": ""
               },
               "envFile": {
