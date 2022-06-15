@@ -1,3 +1,6 @@
+## 1.1.0
+* Support `jobId` and `jobName` properties for `launch` and `attach` configurations.
+
 ## 1.0.1
 * Fix changelog to be Artificial extension's history, not Mock Debug.
 

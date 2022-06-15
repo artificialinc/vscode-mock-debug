@@ -1,7 +1,7 @@
 {
   "name": "artificial-debug-extension",
   "displayName": "Artificial Inc. Workflow Debugger VSCode Extension",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "publisher": "artificial",
   "description": "Enables debugging of Artificial, Inc. Workflows.",
   "author": {
@@ -14,7 +14,7 @@
   "categories": [
     "Debuggers"
   ],
-  "private": true,
+  "private": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/artificialinc/debug-adapter-extension.git"
@@ -90,6 +90,16 @@
                 "description": "Absolute path to a workflow file.",
                 "default": "${file}"
               },
+              "jobId": {
+                "type": "string",
+                "description": "Unique id of an existing request to launch.",
+                "default": ""
+              },
+              "jobName": {
+                "type": "string",
+                "description": "Unique name of an existing request to launch; ignored if jobId is set.",
+                "default": ""
+              },
               "envFile": {
                 "type": "string",
                 "description": "Absolute path to a .env file for the debug adapter.",
@@ -97,7 +107,7 @@
               },
               "jobArgs": {
                 "type": "object",
-                "description": "Values for workflow request module parameters.",
+                "description": "Values for workflow request module parameters; ignored if jobId or jobName is set.",
                 "default": {}
               }
             }
@@ -111,6 +121,16 @@
                 "type": "string",
                 "description": "Absolute path to a workflow file.",
                 "default": "${file}"
+              },
+              "jobId": {
+                "type": "string",
+                "description": "Unique id of the running job to attach to.",
+                "default": ""
+              },
+              "jobName": {
+                "type": "string",
+                "description": "Unique name of the running job to attach to; should be set if jobId is not set.",
+                "default": ""
               },
               "envFile": {
                 "type": "string",

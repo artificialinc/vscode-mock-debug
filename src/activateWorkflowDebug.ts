@@ -59,6 +59,12 @@ class ArtificialWorkflowDebugConfigurationProvider implements vscode.DebugConfig
 			});
 		}
 
+		if (config.type == 'attach' && !config.jobId && !config.jobName) {
+			return vscode.window.showInformationMessage("jobId or jobName must be specified in attach config").then(_ => {
+				return undefined;	// abort launch
+			});
+		}
+
 		return config;
 	}
 }
