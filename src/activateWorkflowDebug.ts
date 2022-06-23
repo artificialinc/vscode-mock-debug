@@ -32,6 +32,10 @@ export function activateWorkflowDebug(context: vscode.ExtensionContext, factory:
 	}, vscode.DebugConfigurationProviderTriggerKind.Dynamic));
 
 	context.subscriptions.push(vscode.debug.registerDebugAdapterDescriptorFactory('artificial-workflow', factory));
+
+	vscode.window.registerUriHandler({
+		handleUri
+	});
 }
 
 class ArtificialWorkflowDebugConfigurationProvider implements vscode.DebugConfigurationProvider {
@@ -65,6 +69,34 @@ class ArtificialWorkflowDebugConfigurationProvider implements vscode.DebugConfig
 			});
 		}
 
+		config.envFile = config.envFile ?? vscode.workspace.getConfiguration('artificial.workflow.debug').envFilePath
+
 		return config;
 	}
+}
+
+function handleUri(uri: vscode.Uri) {
+	const queryParams = parseQueryString(uri.query)
+	if (uri.path == '/attachJob' || uri.path == '/launchJob') {
+		const configuration = {
+			type: 'artificial-workflow',
+			name: uri.path == '/attachJob' ? 'Attach To Job' : 'Launch Job',
+			request: uri.path == '/attachJob' ? 'attach' : 'launch',
+			program: '${file}',
+			jobId: queryParams['jobId']
+		};
+		vscode.debug.startDebugging(undefined, configuration);
+	}
+}
+
+function parseQueryString(query: string) {
+	let params = {}
+	for (const param of query.split('&').map(s => {
+		let components = s.split('=')
+		return { name: components[0], value: components[1] }
+	})) {
+		const { name, value } = param;
+		params[name] = value;
+	}
+	return params;
 }
