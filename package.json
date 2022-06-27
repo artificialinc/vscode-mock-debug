@@ -1,7 +1,7 @@
 {
   "name": "artificial-debug-extension",
   "displayName": "Artificial Inc. Workflow Debugger VSCode Extension",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "artificial",
   "description": "Enables debugging of Artificial, Inc. Workflows.",
   "author": {
@@ -60,7 +60,8 @@
   "main": "./dist/extension.js",
   "activationEvents": [
     "onDebugResolve:artificial-workflow",
-    "onDebugDynamicConfigurations:artificial-workflow"
+    "onDebugDynamicConfigurations:artificial-workflow",
+    "onUri:artificial.artificial-debug-extension"
   ],
   "workspaceTrust": {
     "request": "never"
@@ -69,6 +70,18 @@
     "breakpoints": [
       {
         "language": "python"
+      }
+    ],
+    "configuration": [
+      {
+        "title": "Artificial Workflow Debugging",
+        "properties": {
+          "artificial.workflow.debug.envFilePath": {
+            "type": "string",
+            "default": null,
+            "description": "Path to .env file to use for Artificial Workflows debug adapter"
+          }
+        }
       }
     ],
     "debuggers": [
