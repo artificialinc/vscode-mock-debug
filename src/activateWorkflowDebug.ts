@@ -44,7 +44,7 @@ class ArtificialWorkflowDebugConfigurationProvider implements vscode.DebugConfig
 	 * Massage a debug configuration just before a debug session is being launched,
 	 * e.g. add all missing attributes to the debug configuration.
 	 */
-	resolveDebugConfiguration(folder: WorkspaceFolder | undefined, config: DebugConfiguration, token?: CancellationToken): ProviderResult<DebugConfiguration> {
+	async resolveDebugConfiguration(folder: WorkspaceFolder | undefined, config: DebugConfiguration, token?: CancellationToken): Promise<DebugConfiguration | undefined> {
 
 		// if launch.json is missing or empty
 		if (!config.type && !config.request && !config.name) {
@@ -58,19 +58,24 @@ class ArtificialWorkflowDebugConfigurationProvider implements vscode.DebugConfig
 		}
 
 		if (!config.program) {
-			return vscode.window.showInformationMessage("Cannot find a program to debug").then(_ => {
-				return undefined;	// abort launch
-			});
+			await vscode.window.showErrorMessage("Cannot find a program to debug");
+			return undefined;	// abort launch
 		}
 
 		if (config.type == 'attach' && !config.jobId && !config.jobName) {
-			return vscode.window.showInformationMessage("jobId or jobName must be specified in attach config").then(_ => {
-				return undefined;	// abort launch
-			});
+			await vscode.window.showErrorMessage("jobId or jobName must be specified in attach config");
+			return undefined;
 		}
 
 		config.envFile = config.envFile ?? vscode.workspace.getConfiguration('artificial.workflow.debug').envFilePath
 
+		try {
+			await vscode.workspace.fs.stat(vscode.Uri.parse('file:///home/code/.local/bin/wfdebug'));
+		}
+		catch (ex: any) {
+			const fileSystemError: vscode.FileSystemError = ex;
+			vscode.window.showWarningMessage(`Cannot access wfdebug utility; please ensure that the artificial-debug-adapter package is installed. Error: ${fileSystemError.message}`);
+		}
 		return config;
 	}
 }

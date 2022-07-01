@@ -1,7 +1,7 @@
 {
   "name": "artificial-debug-extension",
   "displayName": "Artificial Inc. Workflow Debugger VSCode Extension",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "publisher": "artificial",
   "description": "Enables debugging of Artificial, Inc. Workflows.",
   "author": {
