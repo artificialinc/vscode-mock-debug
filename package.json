@@ -1,7 +1,7 @@
 {
   "name": "artificial-debug-extension",
   "displayName": "Artificial Inc. Workflow Debugger VSCode Extension",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "publisher": "artificial",
   "description": "Enables debugging of Artificial, Inc. Workflows.",
   "author": {
@@ -77,9 +77,27 @@
         "title": "Artificial Workflow Debugging",
         "properties": {
           "artificial.workflow.debug.envFilePath": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "default": null,
             "description": "Path to .env file to use for Artificial Workflows debug adapter"
+          },
+          "artificial.workflow.debug.debugLog": {
+            "type": "boolean",
+            "default": true,
+            "title": "Debug Adapter Logging",
+            "description": "Whether to send debug logging from the Artificial Workflows debug adapter to the Debug Console"
+          },
+          "artificial.workflow.debug.debugAdapterPort": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "title": "Debug Adapter Port",
+            "description": "If set, the localhost port of a running debug adapter to connect to"
           }
         }
       }
