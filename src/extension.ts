@@ -15,48 +15,45 @@ import * as vscode from 'vscode';
 import { ProviderResult } from 'vscode';
 import { activateWorkflowDebug } from './activateWorkflowDebug';
 
-/*
- * The compile time flag 'runMode' controls how the debug adapter is run.
- * Please note: the test suite only supports 'external' mode.
- */
-const runMode: 'external' | 'server' = 'external';
 
 export function activate(context: vscode.ExtensionContext) {
-
-	// debug adapters can be run in different ways by using a vscode.DebugAdapterDescriptorFactory:
-	switch (runMode) {
-		case 'server':
-			// communicate with a running debug adapter process via a socket
-			activateWorkflowDebug(context, new WorkflowDebugAdapterServerDescriptorFactory());
-			break;
-
-		case 'external': default:
-			// run the debug adapter as a separate process
-			activateWorkflowDebug(context, new WorkflowDebugAdapterExecutableFactory());
-			break;
-	}
+	const outputChannel = vscode.window.createOutputChannel('Artificial Workflow Debugging')
+	context.subscriptions.push(outputChannel)
+	activateWorkflowDebug(context, new WorkflowDebugAdapterFactory(outputChannel));
 }
 
 export function deactivate() {
 	// nothing to do
 }
 
-class WorkflowDebugAdapterExecutableFactory implements vscode.DebugAdapterDescriptorFactory {
+class WorkflowDebugAdapterFactory implements vscode.DebugAdapterDescriptorFactory {
+
+	private _outputChannel: vscode.OutputChannel;
+
+	constructor(outputChannel: vscode.OutputChannel) {
+		this._outputChannel = outputChannel
+	}
 
 	createDebugAdapterDescriptor(_session: vscode.DebugSession, executable: vscode.DebugAdapterExecutable | undefined): ProviderResult<vscode.DebugAdapterDescriptor> {
 		// param "executable" contains the executable optionally specified in the package.json (if any)
 
+		const debugConfig = vscode.workspace.getConfiguration('artificial.workflow.debug')
+
+		const port: number | null = debugConfig.debugAdapterPort;
+		if (port) {
+			this._outputChannel.appendLine(`Connecting to debug adapter on port ${port}`)
+			return new vscode.DebugAdapterServer(port);
+		}
+
 		const command = "wfdebug";
-		const args = [];
+		const debugLog: boolean = debugConfig.debugLog;
+		var args: Array<string> = [];
+		if (debugLog) {
+			args = args.concat('--debuglog')
+		}
 		const options = {};
+		this._outputChannel.appendLine(`Starting debug adapter ${command} with args ${args}`)
 		return new vscode.DebugAdapterExecutable(command, args, options);
-	}
-}
-
-class WorkflowDebugAdapterServerDescriptorFactory implements vscode.DebugAdapterDescriptorFactory {
-
-	createDebugAdapterDescriptor(session: vscode.DebugSession, executable: vscode.DebugAdapterExecutable | undefined): vscode.ProviderResult<vscode.DebugAdapterDescriptor> {
-		return new vscode.DebugAdapterServer(4711);
 	}
 
 	dispose() { }
